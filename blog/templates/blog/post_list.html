@@ -1,98 +1,16 @@
-<!DOCTYPE html>
-<html lang="ru">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Django Girls Blog</title>
-        <style>
-            body {
-                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-                max-width: 720px;
-                margin: 0 auto;
-                padding: 1.5rem;
-                line-height: 1.6;
-                background: #f6f7fb;
-                color: #111;
-            }
+{% extends 'blog/base.html' %}
 
-            header {
-                margin-bottom: 1.5rem;
-            }
-
-            header h1 {
-                margin: 0;
-                font-size: 1.75rem;
-            }
-
-            header a {
-                color: inherit;
-                text-decoration: none;
-            }
-
-            h2 {
-                color: #0366d6;
-                text-decoration: underline;
-            }
-
-            article {
-                background: #fff;
-                border: 1px solid #e1e4e8;
-                border-radius: 8px;
-                padding: 1.25rem;
-                margin-bottom: 1rem;
-            }
-
-            article h2 {
-                margin: 0 0 0.5rem 0;
-                font-size: 1.3rem;
-            }
-
-            article a {
-                color: #0366d6;
-                text-decoration: none;
-            }
-
-            article a:hover {
-                text-decoration: underline;
-            }
-
-            .article-meta {
-                font-size: 0.9rem;
-                color: #555;
-                margin-bottom: 0.75rem;
-            }
-
-            .actions {
-                margin-top: 0.75rem;
-            }
-
-            .actions a {
-                color: #d73a49;
-                font-weight: 600;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1><a href="/">Django Girls Blog</a></h1>
-            <h2><a href="/admin/blog/post/add">Create New Post</a></h2>
-        </header>
-
-        <main>
-            {% for post in posts %}
-            <article>
-                <div class="article-meta">
-                    <time datetime="{{ post.published_date|date:'c' }}">Published: {{ post.published_date|date:'j F Y' }}</time>
-                </div>
-                <h2><a href="/admin/blog/post/{{ post.pk }}/change/">{{ post.title }}</a></h2>
-                <p>{{ post.text|truncatechars:200 }}</p>
-                <div class="actions">
-                    <a href="/admin/blog/post/{{ post.pk }}/delete/">Удалить</a>
-                </div>
-            </article>
-            {% empty %}
-            <p>Пока нет постов.</p>
-            {% endfor %}
-        </main>
-    </body>
-</html>
+{% block content %}
+    <h1>Все посты</h1>
+    
+    {% for post in posts %}
+        <div>
+            <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+            <p>{{ post.created_at }}</p>
+            <p>Комментариев: {{ post.comments.count }}</p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>Постов пока нет</p>
+    {% endfor %}
+{% endblock %}

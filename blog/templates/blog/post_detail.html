@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.created_at }}</p>
+    <p>{{ post.content }}</p>
+    
+    <hr>
+    
+    <h2>Комментарии ({{ comments.count }})</h2>
+    
+    {% for comment in comments %}
+        <div>
+            <strong>{{ comment.author }}</strong> — {{ comment.created_at }}
+            <p>{{ comment.text }}</p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>Комментариев пока нет</p>
+    {% endfor %}
+    
+    <h3>Добавить комментарий</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
+{% endblock %}
